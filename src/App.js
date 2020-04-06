@@ -8,7 +8,7 @@ import ShopPage from './pages/shop/shop.component.jsx'
 import Header from './components/header/header.component.jsx'
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component.jsx'
 
-import { auth } from './firebase/firebase.utils'; // authentication functionality
+import { auth, createUserProfileDocument } from './firebase/firebase.utils'; // authentication functionality
 
 class App extends React.Component{
   constructor(){
@@ -26,9 +26,21 @@ class App extends React.Component{
     //thông tin phiên đăng nhập được lưu trong Cookie
     //khi sign in, sign out, change pass... trong browser bằng firebase, thông tin user sẽ được lưu lại, và sử dụng thông tin đó bằng method onAuthStateChanged()
     //onAuthStateChanged() sẽ listen trạng thái đăng nhập của ng dùng liên tục, từ khi component mounted
-    this.unsubcribeFromAuth = auth.onAuthStateChanged( user => {
-      this.setState({currentUser: user})
-      console.log(user);
+    this.unsubcribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      if(userAuth){
+        const userRef = await createUserProfileDocument(userAuth);
+
+        //onSnapshot listening on change on userRef object in the database
+        userRef.onSnapshot(snapShot => {
+          //snapShot.data()  ==> return the data in the database of specified user
+          this.setState({currentUser: {
+            id: snapShot.id,
+            ...(snapShot.data())
+          }})
+          console.log(this.state)
+        })
+      }
+      this.setState({currentUser: userAuth}) //khi chưa đăng nhập hoặc đã đăng xuất
     })
   }
 

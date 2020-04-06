@@ -11,7 +11,36 @@ const config = {
     messagingSenderId: "947538258311",
     appId: "1:947538258311:web:04ce56e6f9fb1d0de38b22",
     measurementId: "G-GXTZ66DF5K"
-  };
+};
+
+//create user profile (username, password, createDate...) trong firebase database
+export const createUserProfileDocument = async (userAuth, additionalData) => {
+    if(!userAuth) return;
+
+    const userRef = firestore.doc(`users/${userAuth.uid}`);     //dùng userRef này để thực hiện CRUD trên doc, colllection
+
+    const snapShot = await userRef.get();   //kết quả trả về từ lệnh get ko dùng để get đc, chỉ chứa snapshot của giá trị hiện tại, ko phải reference đến object
+
+    //khi thông tin user chưa được lưu trong database
+    if(!snapShot.exists){
+        const {displayName, email} = userAuth;
+        const createdAt = new Date();
+
+        try{
+            await userRef.set({
+                displayName,
+                email,
+                createdAt,
+                ...additionalData
+            })
+        }catch(err){
+            console.log('error creating user', err)
+        }
+    }
+
+    //return reference tới data của user trong database
+    return userRef
+}
 
 //initialize the  firebase app
 firebase.initializeApp(config);

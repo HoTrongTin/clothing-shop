@@ -11,9 +11,10 @@
     text-transform: uppercase;
     font-family: 'Raleway', sans-serif;
     font-weight: bolder;
+    font-size: 12px;
     border: none;
     cursor: pointer;
-    transition: background-color 0.3s ease-in, color 0.3s ease-in, border 0.3s ease-in;
+    transition: background-color 0.2s ease-in, color 0.2s ease-in, border 0.2s ease-in;
   
     &:hover {
       background-color: white;
@@ -25,7 +26,7 @@
     &.google-sign-in{
         background-color: #4285f4;
         color: white;
-        transition: background-color 0.3s ease-in, border 0.3s ease-in, color 0.3s ease-in;
+        transition: background-color 0.2s ease-in, border 0.2s ease-in, color 0.2s ease-in;
 
         &:hover{
             background-color: #ffffff;
