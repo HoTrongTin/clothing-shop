@@ -1,5 +1,5 @@
 import React from 'react';
-import {Switch, Route} from 'react-router-dom'
+import {Switch, Route, Redirect} from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import './App.css';
@@ -50,21 +50,27 @@ class App extends React.Component{
   render(){
     return (
       <div>
-        <Header/>    {/* pass current user detail về phần header, để hiện hoặc ẩn nút Sign In, Sign Out*/}
+        <Header/>
         <Switch>
           <Route exact path='/' component={HomePage}/>
           <Route path='/shop' component={ShopPage}/>
-          <Route path='/signin' component={SignInAndSignUpPage}/>
+          <Route path='/signin' render={() => this.props.currentUser ? (<Redirect to='/'/>) : (<SignInAndSignUpPage/>) }/>    {/* redirect về home nếu đã đăng nhập */}
         </Switch>
       </div>
     );
   }
 }
+                        // destruct user reducer from combineReducers
+const mapStateToProps = ({ user }) => ({
+  currentUser: user.currentUser   // now we have access to currentUser in redux store
+})
 
+
+// gán action setCurrentUser as props của <App>, action này sẽ modify data trong redux store
 const mapDispatchToProps = dispatch => ({
   // thực hiện hàm setCurrentUser(user)
   setCurrentUser: user => dispatch(setCurrentUser(user))
 })
 
 // vì <App> ko cần state nên mapStateToProps để là null
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

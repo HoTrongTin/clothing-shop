@@ -3,13 +3,15 @@ import {Link} from 'react-router-dom';
 import { connect } from 'react-redux'
 
 import { auth } from '../../firebase/firebase.utils'
+import CartIcon from '../cart-icon/cart-icon.component.jsx'
+import CartDropdown from '../cart-dropdown/cart-dropdown.component.jsx'
 
 import './header.style.scss'
 
 import {ReactComponent as Logo} from '../../assets/crown.svg.svg'
 
-// currentUser được lấy từ this.props.currentUser (nằm trong redux store)
-const Header = ({currentUser}) => (
+// currentUser, hidden được lấy từ this.props.currentUser và this.props.hidden (nằm trong redux store)
+const Header = ({ currentUser, hidden }) => (
     <div className='header'>
         <Link to='/' className='logo-container'>
             <Logo className='logo'/>
@@ -27,12 +29,18 @@ const Header = ({currentUser}) => (
                 :
                 <Link className='option' to='/signin'>SIGN IN</Link>
             }
+            <CartIcon/>
         </div>
+        {
+            //show or hide CartDropdown base on hidden prop
+            hidden ? null : <CartDropdown/>
+        }
     </div>
 )
-
-const mapStateToProps = state => ({       //state là rootReducer
-    currentUser: state.user.currentUser
+                            //destruct variable from state là rootReducer
+const mapStateToProps = ( {user: {currentUser}, cart: { hidden }} ) => ({       
+    currentUser,
+    hidden
 })
 
 //connect store vào <Header>
