@@ -1,5 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom';
+import { connect } from 'react-redux'
 
 import { auth } from '../../firebase/firebase.utils'
 
@@ -7,6 +8,7 @@ import './header.style.scss'
 
 import {ReactComponent as Logo} from '../../assets/crown.svg.svg'
 
+// currentUser được lấy từ this.props.currentUser (nằm trong redux store)
 const Header = ({currentUser}) => (
     <div className='header'>
         <Link to='/' className='logo-container'>
@@ -29,4 +31,9 @@ const Header = ({currentUser}) => (
     </div>
 )
 
-export default Header;
+const mapStateToProps = state => ({       //state là rootReducer
+    currentUser: state.user.currentUser
+})
+
+//connect store vào <Header>
+export default connect(mapStateToProps)(Header);

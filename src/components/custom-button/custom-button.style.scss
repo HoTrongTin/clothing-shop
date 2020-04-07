@@ -6,7 +6,7 @@
     line-height: 50px;
     padding: 0 35px 0 35px;
     font-size: 15px;
-    background-color: black;
+    background-color: rgb(0, 173, 9);
     color: white;
     text-transform: uppercase;
     font-family: 'Raleway', sans-serif;
@@ -18,8 +18,9 @@
   
     &:hover {
       background-color: white;
-      color: black;
-      border: 1px solid black;
+      color:rgb(14, 187, 22);
+      border: 1px solid rgb(0, 173, 9);
+      // box-shadow: rgb(62, 182, 68) 0px 1px 3px;
       
     }
 
@@ -32,6 +33,7 @@
             background-color: #ffffff;
             color:  #2575f7;
             border: 1px solid  #2575f7;
+            // box-shadow:  #2575f7 0px 1px 3px;
         }
     }
 
