@@ -1,6 +1,7 @@
 import React from 'react';
 import {Switch, Route, Redirect} from 'react-router-dom'
 import { connect } from 'react-redux'
+import { createStructuredSelector } from 'reselect'
 
 import './App.css';
 
@@ -8,6 +9,8 @@ import HomePage from './pages/homepage/homepage.component.jsx'
 import ShopPage from './pages/shop/shop.component.jsx'
 import Header from './components/header/header.component.jsx'
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component.jsx'
+import CheckoutPage from './pages/checkout/checkout.component.jsx'
+import { selectCurrentUser } from './redux/user/user.selectors'
 
 import { auth, createUserProfileDocument } from './firebase/firebase.utils'; // authentication functionality
 import { setCurrentUser } from './redux/user/user.actions'
@@ -54,15 +57,16 @@ class App extends React.Component{
         <Switch>
           <Route exact path='/' component={HomePage}/>
           <Route path='/shop' component={ShopPage}/>
+          <Route exact path='/checkout' component={CheckoutPage}/>
           <Route path='/signin' render={() => this.props.currentUser ? (<Redirect to='/'/>) : (<SignInAndSignUpPage/>) }/>    {/* redirect về home nếu đã đăng nhập */}
         </Switch>
       </div>
     );
   }
 }
-                        // destruct user reducer from combineReducers
-const mapStateToProps = ({ user }) => ({
-  currentUser: user.currentUser   // now we have access to currentUser in redux store
+                        // destruct user reducer from combineReducers root-reducer
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser   // now we have access to currentUser in redux store
 })
 
 
