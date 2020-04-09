@@ -1,5 +1,4 @@
 import React from 'react'
-import {Link} from 'react-router-dom';
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 
@@ -9,36 +8,37 @@ import CartDropdown from '../cart-dropdown/cart-dropdown.component.jsx'
 import { selectCartHidden } from '../../redux/cart/cart.selectors'
 import { selectCurrentUser } from '../../redux/user/user.selectors'
 
-import './header.style.scss'
+// import './header.style.scss'
+import { HeaderContainer, LogoContainer, OptionsContainer, OptionLink } from './header.style'
 
 import {ReactComponent as Logo} from '../../assets/crown.svg.svg'
 
 // currentUser, hidden được lấy từ this.props.currentUser và this.props.hidden (nằm trong redux store)
 const Header = ({ currentUser, hidden }) => (
-    <div className='header'>
-        <Link to='/' className='logo-container'>
+    <HeaderContainer>
+        <LogoContainer to='/'>
             <Logo className='logo'/>
-        </Link>
-        <div className='options'>
-            <Link className='option' to='/shop'>
+        </LogoContainer>
+        <OptionsContainer>
+            <OptionLink to='/shop'>
                 SHOP
-            </Link>
-            <Link className='option' to='/shop'>
+            </OptionLink>
+            <OptionLink to='/shop'>
                 CONTACT
-            </Link>
+            </OptionLink>
             {
                 currentUser ?
-                <div className='option' onClick={() => auth.signOut()}>SIGN OUT</div>   // sign out người dùng đăng nhập bằng firebase*
+                <OptionLink as='div' onClick={() => auth.signOut()}>SIGN OUT</OptionLink>   // sign out người dùng đăng nhập bằng firebase*
                 :
-                <Link className='option' to='/signin'>SIGN IN</Link>
+                <OptionLink to='/signin'>SIGN IN</OptionLink>
             }
             <CartIcon/>
-        </div>
+        </OptionsContainer>
         {
             //show or hide CartDropdown base on hidden prop
             hidden ? null : <CartDropdown/>
         }
-    </div>
+    </HeaderContainer>
 )
                             // automatically pass state variable into selectCurrentUser and selectCartHidden
 const mapStateToProps = createStructuredSelector({      
