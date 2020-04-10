@@ -66,7 +66,7 @@ class App extends React.Component{
 }
                         // destruct user reducer from combineReducers root-reducer
 const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser   // now we have access to currentUser in redux store
+  currentUser: selectCurrentUser,   // now we have access to currentUser in redux store
 })
 
 

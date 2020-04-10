@@ -42,6 +42,40 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     return userRef
 }
 
+// Dùng để add SHOP_DATA, collection  vào firebase storage
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+    const collectionRef = firestore.collection(collectionKey);
+    
+    // group nhiều request thành một batch rồi thực hiện 1 lần
+    const batch = firestore.batch();
+
+    objectsToAdd.forEach(obj=> {
+        const newDocRef = collectionRef.doc();  //create new doc with newly generated ID
+        batch.set(newDocRef, obj)       // tương tự như newDocRef.set(obj) nhưng được thực hiện trong batch
+    })
+
+    return await batch.commit();
+
+}
+
+export const convertCollectionsSnapshotToMap = (collectionsSnapshot) => {
+    const transformedCollection = collectionsSnapshot.docs.map(docSnapshot=> {
+        const { title, items } = docSnapshot.data();
+
+        return {
+            routeName: encodeURI(title.toLowerCase()),
+            id: docSnapshot.id,
+            title,
+            items
+        }
+    })
+
+    return transformedCollection.reduce((accumulator, collection) => {
+        accumulator[collection.title.toLowerCase()] = collection;
+        return accumulator
+    }, {})
+}
+
 //initialize the  firebase app
 firebase.initializeApp(config);
 
