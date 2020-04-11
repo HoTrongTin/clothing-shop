@@ -1,5 +1,8 @@
 import { createStore, applyMiddleware} from 'redux';
 
+// to use asynchronous code in redux
+import thunk from 'redux-thunk'
+
 // connect redux with localStorage
 import { persistStore } from 'redux-persist'
 
@@ -8,7 +11,7 @@ import logger from 'redux-logger';
 
 import rootReducer from './root-reducer';
 
-const middlewares = [];
+const middlewares = [thunk];
 
 if(process.env.NODE_ENV === 'development'){
     middlewares.push(logger)
